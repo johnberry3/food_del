@@ -3,9 +3,13 @@ import "./FoodItem.css";
 import { assets } from "../../assets/assets";
 import  StoreContext  from "../../Context/StoreContext";
 
-const FoodItem = ({ name, price, image, description }) => {
+const FoodItem = ({ name, _id, price, image, description }) => {
+  // if (!_id) {
+  //   console.error("FoodItem is missing a valid _id:", { name, _id, price, image, description });
+  //   return null; // Render nothing if _id is invalid
+  // }
 
-  const{cartItems, addToCart, removeFromCart, food_list} = useContext(StoreContext);
+  const{cartItems, addToCart, removeFromCart} = useContext(StoreContext);
       
   // const [cartItems, setCartItems] = useState({});
 
@@ -29,22 +33,22 @@ const FoodItem = ({ name, price, image, description }) => {
     <div className="food-item">
       <div className="food-item-img-container">
         <img className="food-item-image" src={image} alt="" />
-        {!cartItems[food_list._id] ? (
+        {!cartItems[_id] ? (
           <img
             className="add"
-            onClick={() => addToCart()}
+            onClick={() => addToCart(_id)}
             src={assets.add_icon_white}
           />
         ) : (
           <div className="food-item-counter">
             <img
-              onClick={() => removeFromCart(food_list._id)}
+              onClick={() => removeFromCart(_id)}
               src={assets.remove_icon_red}
               alt=""
             />
-            <p>{cartItems[food_list._id]}</p>
+            <p>{cartItems[_id]}</p>
             <img
-              onClick={() => addToCart()}
+              onClick={() => addToCart(_id)}
               src={assets.add_icon_green}
               alt=""
             />

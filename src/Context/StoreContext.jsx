@@ -9,6 +9,7 @@ export const StoreContextProvider = ({children}) => {
   const addToCart = (itemId) => {
     if (!cartItems[itemId]) {
       setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
+      console.log("Adding to cart:", itemId, cartItems);
     } else {
       setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
     }
@@ -18,16 +19,30 @@ export const StoreContextProvider = ({children}) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
   };
 
-  const getTotalCartAmount = ()=>{
+  const getTotalCartAmount = () => {
     let totalAmount = 0;
-    for(const item in cartItems){
-        if(cartItems[item]> 0){
-          let itemInfo = food_list.find((product) => product._id === item);
-          totalAmount += itemInfo.price * cartItems[item];
-        }
+  
+    for (const itemId in cartItems) {
+      const quantity = cartItems[itemId];
+  
+      // Skip undefined or invalid itemId
+      if (!itemId || !quantity || quantity <= 0) continue;
+  
+      const itemInfo = food_list.find((product) => String(product._id) === String(itemId));
+      if (itemInfo) {
+        totalAmount += itemInfo.price * quantity;
+      } else {
+        console.warn(`Item with ID ${itemId} not found in food_list.`);
+      }
     }
+  
     return totalAmount;
-  }
+  };
+  
+    useEffect(() => {
+    console.log("Cart Items:", cartItems);
+  }, [cartItems]);
+  
 
   const contextValue = {
     food_list,

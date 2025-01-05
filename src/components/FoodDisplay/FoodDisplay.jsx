@@ -17,7 +17,7 @@ const FoodDisplay = ({ category }) => {
            {console.log(category, item.category)}
            if(category === "All" || category === item.category){
             return <FoodItem
-                key={index}
+                key={item._id}
                 name={item.name}
                 image={item.image}
                 price={item.price}
